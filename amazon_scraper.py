@@ -20,7 +20,9 @@ class Scraper:
         print(self.product_title)
     
     def get_price(self):
-        self.product_price = self.soup.find('span',id='priceblock_ourprice').text.strip()
+        price_raw = self.soup.find('span',id='priceblock_ourprice').text.strip()
+        price_filtered = price_raw[2:len(price_raw)-3]
+        self.product_price = int(''.join([x for x in price_filtered if x is not ',']))
         print(self.product_price)
         return
 
