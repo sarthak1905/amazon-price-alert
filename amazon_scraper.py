@@ -12,15 +12,10 @@ class Scraper:
         #Attributes about product
         self.url = url
         self.budget = budget
-
-        #Attributes for email sending
-        context = ssl.create_default_context()
-        port = 587
-        self.server = smtplib.SMTP_SSL('smtp.gmail.com', port, context=context)
-        self.email = str(os.environ.get('DEVELOPER_MAIL'))
-        self.app_pw = str(os.environ.get('DEVELOPER_PASS'))
-        self.u_email = u_email
         
+        #Setting user email
+        self.u_email = u_email
+
         #Attributes about scraping
         self.session = HTMLSession()
         self.webpage = self.session.get(self.url).content
@@ -71,16 +66,31 @@ class Scraper:
     
     #Sends an email when the condition is satisfied. Under testing!
     def send_email(self):
-        self.server.ehlo()
-        self.server.starttls()
-        self.server.ehlo()
-        self.server.login(self.email,self.app_pw)
 
-        subject = 'The price of the product is within your budget!'
+        #Attributes for email sending
+        port = 587
+        smtp_server = 'smtp.gmail.com'
+        self.email = str(os.environ.get('DEVELOPER_MAIL'))
+        self.app_pw = str(os.environ.get('DEVELOPER_PASS'))
 
-        body = self.url
+        #Message details
+        subject = f'The price of {self.get_title} is within your budget!'
+
+        body_start = f'Hey there!\n\nThe price of {self.title} is now within your budget. Here is the link, buy it now!\n' 
+        body_mid = self.url
+        body_end = '\n\nRegards\nYour friendly neighbourhood programmer'
 
         message = f"Subject: {subject}\n\n{body}"
+
+        #Establishing server
+        context = ssl.create_default_context()
+        self.server = smtplib.SMTP(smtp_server, port)
+
+        #Mail sending
+        self.server.ehlo()
+        self.server.starttls(context=context)
+        self.server.ehlo()
+        self.server.login(self.email,self.app_pw)
 
         self.server.sendmail(self.email,self.u_email,message)
 
