@@ -8,9 +8,12 @@ class Scraper:
 
     #Initializes the scraper C3PO
     def __init__(self,url,budget,u_email):
+
+        #Attributes about product
         self.url = url
         self.budget = budget
 
+        #Attributes for email sending
         context = ssl.create_default_context()
         port = 587
         self.server = smtplib.SMTP_SSL('smtp.gmail.com', port, context=context)
@@ -18,6 +21,7 @@ class Scraper:
         self.app_pw = str(os.environ.get('DEVELOPER_PASS'))
         self.u_email = u_email
         
+        #Attributes about scraping
         self.session = HTMLSession()
         self.webpage = self.session.get(self.url).content
         self.parser = 'lxml'
@@ -65,6 +69,7 @@ class Scraper:
             self.send_email()
         return
     
+    #Sends an email when the condition is satisfied. Under testing!
     def send_email(self):
         self.server.ehlo()
         self.server.starttls()
