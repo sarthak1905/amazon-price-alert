@@ -28,8 +28,14 @@ class Scraper:
 
     #Stores the title of the product
     def get_title(self):
-        self.product_title = self.soup.find('span',id='productTitle').text.strip()
-        return
+        temp_title = self.soup.find('span',id='productTitle').text.strip()
+        temp_list_title = []
+        for x in temp_title:
+            if x is '(':
+                break
+            temp_list_title.append(x)
+        self.product_title = ''.join(temp_list_title)
+        return self.product_title
     
     #Stores the price of the product after filtering the string and converting it to an integer
     def get_price(self):
@@ -74,11 +80,12 @@ class Scraper:
         self.app_pw = str(os.environ.get('DEVELOPER_PASS'))
 
         #Message details
-        subject = f'The price of {self.get_title} is within your budget!'
+        subject = f'The price of {self.get_title()} is within your budget!'
 
-        body_start = f'Hey there!\n\nThe price of {self.title} is now within your budget. Here is the link, buy it now!\n' 
+        body_start = 'Hey there!\n\nThe price is now within your budget. Here is the link, buy it now!\n' 
         body_mid = self.url
         body_end = '\n\nRegards\nYour friendly neighbourhood programmer'
+        body = str(body_start) + str(body_mid) + str(body_end)
 
         message = f"Subject: {subject}\n\n{body}"
 
