@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from requests_html import HTMLSession
 import os 
+import time
 import smtplib , ssl
 import requests
 
@@ -63,12 +64,14 @@ class Scraper:
     
     #Runs the scraper
     def run(self):
+
         self.get_title()
         self.get_price()
         self.alert = self.is_below_budget()
+        self.status = False
         if self.alert:
-            self.send_email()
-        return
+            self.status = self.send_email()
+        return self.status
     
     #Sends an email when the condition is satisfied. Under testing!
     def send_email(self):
@@ -103,15 +106,34 @@ class Scraper:
 
         print("Email sent successfully!")
         self.server.quit()
-        return
+        return True
 
 
 def main():
     url = input("Paste the link of the Amazon product whose price you wish to monitor:")
     budget = int(input("Enter you budget price:"))
     u_email = input("Enter your email:")
+    inp_str = ("How frequuently would you like to check the price?"
+               "\n1.Every hour\n2.Every 3 hours\n3.Every 6 hours"
+               "\nEnter your choice(default is 6 hours):")
+    time_choice = int(input(inp_str))
+    if time_choice == 1:
+        time_delay = 60 * 60
+    elif time_choide == 2:
+        time_delay = 3 * 60 * 60
+    else:
+        time_delay = 6 * 60 * 60
+    msg = ("Great! Now just sit back and relax. Minimize this program and be sure "
+            "that it is running. Additionally, ensure that there is stable internet connection "
+            "during the time this program runs. If the price of the product falls within your budget, "
+            "you will recieve an email regarding the same and this program will auto-close. Thank you for using "
+            "C3PO scraper! Beep-bop bop-beep.")
+    print(msg)
     c3po = Scraper(url,budget,u_email)
-    c3po.run()
+    stop = False
+    while not stop:
+        stop = c3po.run()
+        time.sleep(time_delay)
 
 if __name__ == '__main__':
     main()
