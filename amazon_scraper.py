@@ -124,15 +124,15 @@ def main():
     else:
         time_delay = 6 * 60 * 60
     msg = ("Great! Now just sit back and relax. Minimize this program and be sure "
-            "that it is running. Additionally, ensure that there is stable internet connection "
-            "during the time this program runs. If the price of the product falls within your budget, "
-            "you will recieve an email regarding the same and this program will auto-close. Thank you for using "
+            "that it is running.\nAdditionally, ensure that there is stable internet connection "
+            "during the time this program runs.\nIf the price of the product falls within your budget, "
+            "you will recieve an email regarding the same and this program will auto-close.\nThank you for using "
             "C3PO scraper! Beep-bop bop-beep.")
     print(msg)
     c3po = Scraper(url,budget,u_email)
-    stop = False
-    while not stop:
-        stop = c3po.run()
+    while True:
+        if c3po.run():
+            break
         time.sleep(time_delay)
 
 if __name__ == '__main__':
