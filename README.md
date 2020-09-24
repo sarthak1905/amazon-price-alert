@@ -7,13 +7,15 @@
  
  ## How to use 
  Simply copy-paste the link of the product and your budget- that's it! The scraper will do the rest for you and notify you when the price is in your budget.
+ However, it is to be kept in mind that the sender email ID and password has been stored in os variables in the script. Therefore, wherever you see the imports of 
+ 'DEVELOPER_EMAIL' and 'DEVELOPER_PASS', be sure to replace them with the email ID you wish to recieve the notification from.
  ### Side Note
  Do remember to install the dependencies in the requirements.txt file!
  
- ## Modules used
+ ## Modules used (available in requirements.txt)
  * requests
  * requests_html
  * BeautifulSoup
  
  ## Development Status 
- This scrapper is currently under development is being worked upon as you read this!
+ This scrapper is complete. A future version may have emails sent via a server.
